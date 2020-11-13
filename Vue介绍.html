@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>my first vue test</title>
+        <script src="https://unpkg.com/vue"></script>    </head>
+    <body>
+        <div id="app">
+            {{message}}
+            <div>
+                <span v-once>这个将不再改变{{message}}</span>
+                
+            </div>
+            <div>
+                <span>'{{reverseMessage}}'</span>
+            </div>
+        </div>
+        <div id="app2">
+            <span v-bind:title='message'>鼠标悬停等待一下下</span>
+        </div>
+        <div id="app3">
+            <p v-if="seen">你能看到我</p>
+        </div>
+        <div id="app4">
+            <ol>
+                <li v-for='item in todos'>{{item.text}}</li>
+            </ol>
+        </div>
+        <div id="app5">
+            <p>{{message}}</p>
+            <button v-on:click="reverseMessage">点击这里进行翻转</button>
+        </div>
+        <div id="app6">
+            <p>{{message}}</p>
+            <input type="text" v-model="message">
+        </div>
+        <div id="app7">
+            <ol>
+                <todo-item
+                v-for="item in groceryList"
+                v-bind:todo="item"
+                v-bind:key="item.id"
+                >
+                </todo-item>
+            </ol>
+        </div>
+    </body>
+    <script>
+        var app = new Vue({
+            el: "#app",
+            methods: {
+                init() {
+                console.log('this is init 函数')
+            }
+            },
+            data: {
+                message: "Hello, This is my first try!~haha"
+            },
+            computed: {
+                reverseMessage: function() {
+                    return this.message.split('').reverse().join('')
+                }
+            },
+            created: function() {
+                this.init();
+                console.log(this.message)
+            }
+        })
+        var app2 = new Vue({
+            el: "#app2",
+            data: {
+                message:"放心吧我这不是出现了么"
+
+            }
+        })
+        var app3 = new Vue({
+            el: "#app3",
+            data: {
+                seen: true
+            },
+            methods: {
+                change() {
+                    this.seen = false;
+                }
+            }
+            
+        })
+        var app4 = new Vue({
+            el: "#app4",
+            data: {
+                todos: [
+                    {text: '学习JavaScript'},
+                    {text: '学习vue开发'},
+                    {text: '干翻上帝'}
+                ]
+            }
+        })
+        var app5 = new Vue({
+            el: "#app5",
+            data: {
+                message: '这个字符串即将被反转'
+            },
+            methods: {
+                reverseMessage() {
+                    console.log("点击了")
+                    this.message = this.message.split('').reverse().join('')
+                }
+            }
+        })
+        var app6 = new Vue({
+            el: "#app6",
+            data: {
+                message: "这里可以输入数据实时更新哦"
+            }
+        })
+        Vue.component('todo-item', {
+            props: ['todo'],
+            template: '<li>{{todo.text}}</li>'
+        })
+        var app7 = new Vue({
+            el: "#app7",
+            data: {
+                groceryList: [
+                    {id: 0, text: '蔬菜'},
+                    {id: 1, text: '啤酒'},
+                    {id: 2, text: '三文鱼吧'}
+                ]
+            }
+        })
+    </script>
+</html>

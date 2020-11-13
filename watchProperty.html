@@ -1,0 +1,58 @@
+<!DOCTYPe html>
+<head>
+    <title>测试</title>
+    <script src="https://unpkg.com/vue"></script>
+    <body>
+      <div id="watch-example">
+          <p>Ask a yes/no question:
+              <input type="text" v-model="question">
+          </p>
+          <img src='imageUrl' alt="图片没显示出来">
+          <p>{{ answer }}</p>
+      </div>  
+    </body>
+<script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+<script>
+    var watchExampleVm = new Vue({
+        el: "#watch-example",
+        data: {
+            question: '',
+            answer: '在你提问之前我不能给你一个答案',
+            ImageUrl: ''
+        },
+        watch: {
+            // 如果question发生变化就执行这个函数
+            question: function() {
+                this.answer = '在你停止输入前我会一直等待...'
+                this.debounceGetAnswer()
+            }
+        },
+        created: function() {
+             // `_.debounce` 是一个通过 Lodash 限制操作频率的函数。
+             // 在这个例子中，我们希望限制访问 yesno.wtf/api 的频率
+             // AJAX 请求直到用户输入完毕才会发出。
+                this.debounceGetAnswer = _.debounce(this.getAnswer, 500)
+        },
+        methods: {
+            getAnswer: function() {
+                if (this.question.indexOf('?') === -1) {
+                    this.answer = "问题必须包含至少一个问号;-"
+                    return
+                }
+                this.answer = '思考中...'
+                var vm = this
+                axios.get('https://yesno.wtf/api')
+                .then(function(response) {
+                    vm.answer = _.capitalize(response.data.answer)
+                    vm.ImageUrl = response.data.image
+                    console.log(vm.ImageUrl)
+                })
+                .catch(function(error) {
+                    vm.answer = 'Error! 到不了这个API' + error
+                })
+            }
+        }
+    })
+</script>
+</head>

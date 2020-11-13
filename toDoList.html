@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>my first toDolist</title>
+        <script src="https://unpkg.com/vue"></script> 
+    </head>
+    <body>
+        <div id="todo-list">
+            <form v-on:submit.prevent="addNewTodo">
+                <label for="new-todo">添加一个要做的新任务</label>
+                <input v-model="newTodoText" placeholder="例如，去健身房运动2小时" id="new-todo">
+                <button>添加</button>
+            </form>
+            <ul>
+                <li
+                is="todo-item"
+                v-for="(todo, index) in todos"
+                v-bind:key="todo.id"
+                v-bind:title="todo.title"
+                v-on:remove="todos.splice(index, 1)"
+                >
+            </li>
+            </ul>
+        </div>
+    </body>
+    <script>
+        Vue.component("todo-item", {
+            props: ['title'],
+            template: '\
+    <li>\
+      {{ title }}\
+      <button v-on:click="$emit(\'remove\')">Remove</button>\
+    </li>\
+  '
+            
+        })
+        var app = new Vue({
+            el: "#todo-list",
+            data: {
+                newTodoText: '',
+                todos: [
+                    {
+                        id: 1,
+                        title: '把碗洗了'
+                    },
+                    {
+                        id: 2,
+                        title: '下楼把垃圾倒了'
+                    },
+                    {
+                        id: 3,
+                        title: '把除草剂撒一下'
+                    }
+                ],
+                nextTodoId: 4
+            },
+            methods: {
+                addNewTodo: function() {
+                    this.todos.push({
+                        id: this.nextTodoId++,
+                        title: this.newTodoText
+                    })
+                    this.newTodoText = ''
+                }
+            }
+        })
+    </script>
+</html>

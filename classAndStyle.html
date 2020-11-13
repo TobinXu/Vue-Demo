@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>学一学class和style</title>
+    </head>
+    <body>
+        <div id="app">
+            <div v-bind:style=styleObj>干啥呀</div>
+            <div v-if="awesome">Vue is actuall awesome!</div>
+            <div v-else>Oh no /哭</div>
+            <template v-if="ok">
+                <h1>title</h1>
+                <p>ParaGraph</p>
+                <p>ParaGraph2</p>
+            </template> 
+            <div v-if="Math.random() > 0.5">
+                Now you can see me
+            </div>
+            <div v-else>
+                This time you cant see me
+            </div>
+            <template v-if="loginType === 'username'">
+                <label >Username</label>
+                <input type="text" placeholder="Enter your username">
+            </template v-else>
+            <template v-else>
+                <label>Email</label>
+                <input type="text" placeholder="Enter your Email">
+            </template>
+            <button v-on:click="changeMode">改变登录方式</button>   
+            <div>
+                <button v-on:click="counter += 1">加1</button>
+                <p>按钮被点击了{{counter}}次</p>
+            </div>
+            <div v-show="ok">This is v-show test</div>
+            <ul>
+                <li v-for="item in items" :key="item.message">
+                    {{item.message}}
+                </li>
+            </ul>
+            <ul>
+                <li v-for="(item, index) in items">
+                    {{parentMessage}} - {{index}} - {{item.message}}
+                </li>
+            </ul>
+            <ul>
+                <li v-for="value in object">
+                    {{value}}
+                </li>
+            </ul>
+            <div v-for="(value, name) in object">
+                {{name}}: {{value}}
+            </div>
+            <div v-for="(value, name, index) in object">
+                {{index}}. {{ name}}: {{value}}
+            </div>
+            <div v-for="item in items" v-bind:key="item.id">
+                {{item.message}}
+            </div>
+            <li v-for="n in evenNumbers">{{ n }}</li>
+            <ul v-for="set in sets">
+                <li v-for="n in even">{{ n }}</li>
+            </ul>
+            <div>
+                <span v-for="n in 10">{{n}}</span>
+            </div>
+            <ul>
+                <template v-for="item in items">
+                    <li>{{item.message}}</li>
+                </template>
+            </ul>
+        </div>
+    </body>
+    <script>
+        var app = new Vue({
+            el: "#app",
+            data: {
+                parentMessage: 'Parent',
+                awesome: true,
+                counter: 0,
+                loginType: '',
+                ok: true,
+                numbers: [1,2,3,4,5],
+                sets: [[1,2,3,4,5], [6,7,8,9,10]],
+                styleObj: {
+                    color: 'lightblue',
+                    fontSize: '50px'
+                },
+                items: [
+                    {message: 'Foo', id: 0},
+                    {message: 'Bar', id: 1}
+                ],
+                object: {
+                    title: "How to do lists in Vue",
+                    author: "Jane Doe",
+                    publishedAt: '2016-04-10'
+                }
+            },
+            methods: {
+                changeMode: function() {
+                    if (this.loginType === 'username') {
+                        this.loginType = 'email'
+                    } else {
+                        this.loginType = 'username'
+                    }
+                },
+                even: function(numbers) {
+                        return numbers.filter(function(number) {
+                            return number % 2 === 0
+                        })
+                    }
+            },
+            computed: {
+                    evenNumbers: function() {
+                        return this.numbers.filter(function(number) {
+                            return number % 2 === 0
+                        })
+                    }
+                }
+        })
+    </script>
+</html>
