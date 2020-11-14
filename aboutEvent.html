@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>事件处理</title>
+        <script src="https://unpkg.com/vue"></script> 
+    </head>
+    <body>
+        <div id="app">
+            <button v-on:click="counter += 1">Add 1</button>
+            <p>你已经点击了{{counter}}次这个按钮了</p>
+            <div>
+                <button v-on:click="greet">欢迎光临</button>
+            </div>
+            <div>
+                <button v-on:click="say('hi')">问号</button>
+                <button v-on:click="say('明天吃个啥？')">吃啥</button>
+            </div>
+            <div>
+                <button v-on:click="warn('Form cannot be submitted yet.', $event)">提交</button>
+                <input v-on:keyup.enter="submit">
+            </div>
+            <div>
+                <input type="text" v-model="message" placeholder="请输入">
+                <br>
+                <p>输入的消息是：{{message}}</p>
+            </div>
+            <span>多行的消息是这样的</span>
+            <br>
+            <textarea v-model="message" placeholder="这里你可以输入多行文字了" cols="30" rows="10"></textarea>
+            <br>
+            <p style="white-space: pre-line;">{{message}}</p>
+            <div>
+                <input type="checkbox" id="checkbox" v-model="checked">
+                <label for="checkbox">{{checked}}</label>
+            </div>
+            <div>
+                <input type="checkbox" id="jack" value="jack" v-model="checkedNames">
+                <label for="jack">Jack</label>
+                <input type="checkbox" id="john" value="john" v-model="checkedNames">
+                <label for="john">John</label>
+                <input type="checkbox" value="Mike" id="mike" v-model="checkedNames">
+                <label for="mike">Mike</label>
+                <br>
+                <span>Checked names: {{checkedNames}}</span>
+            </div>
+            <div>
+                <select v-model="selected">
+                    <option disabled value="">请选择</option>
+                    <option>A</option>
+                    <option>提拉米苏</option>
+                    <option>蛋黄派</option>
+                    <option>北京烤鸭</option>
+                </select>
+                <span>Selected: {{selected}}</span>
+            </div>
+            <div>
+                <select v-model="selecting">
+                    <option v-for="option in options" v-bind:value="option.value">
+                        {{option.text}}
+                    </option>
+                </select>
+                <span>Selecting: {{selecting}}</span>
+            </div>
+            <div>
+                <input type="checkbox" v-model="toggle" true-value="yes" false-value="no">
+            </div>
+            <div>
+                <input v-model.number="age" type="number">
+            </div>
+
+        </div>
+    </body>
+    <script>
+        var app = new Vue({
+            el: "#app",
+            data: {
+                age: 10,
+                toggle: false,
+                counter: 0,
+                name: 'TobinXu',
+                message: '',
+                checked: false,
+                checkedNames: [],
+                selected: '',
+                selecting: 'A',
+                options: [
+                    {text: '我的天', value: 'A'},
+                    {text: '大太阳', value: 'B'},
+                    {text: '三杯鸡', value: 'C'}
+                ]
+            },
+            methods: {
+                greet: function(event) {
+                    alert("Hello " + this.name + " !")
+                    if (event) {
+                        alert(event.target.tagName)
+                    }
+                },
+                say: function(message) {
+                    alert(message)
+                },
+                warn: function(message, event) {
+                    if (event) {
+                        event.preventDefault()
+                    }
+                    alert(message)
+                }
+            }
+        })
+    </script>
+</html>
